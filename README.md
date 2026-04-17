@@ -520,7 +520,7 @@ make test-integration
 **📸 Screenshot 4B:** `find .pes -type f | sort` showing object store growth after three commits.
 ![phase4](4b.png)
 **📸 Screenshot 4C:** `cat .pes/refs/heads/main` and `cat .pes/HEAD` showing the reference chain.
-
+![phase4](4c.png)
 ---
 
 ## Phase 5 & 6: Analysis-Only Questions
