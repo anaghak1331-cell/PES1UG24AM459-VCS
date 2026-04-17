@@ -377,7 +377,7 @@ The test program verifies:
 **📸 Screenshot 1A:** Output of `./test_objects` showing all tests passing.
 ![Phase 1](1a.png)
 **📸 Screenshot 1B:** `find .pes/objects -type f` showing the sharded directory structure.
-
+![phase 1](1b.png)
 ---
 
 ## Phase 2: Tree Objects
