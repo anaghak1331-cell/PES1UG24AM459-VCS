@@ -530,16 +530,56 @@ The following questions cover filesystem concepts beyond the implementation scop
 ### Branching and Checkout
 
 **Q5.1:** A branch in Git is just a file in `.git/refs/heads/` containing a commit hash. Creating a branch is creating a file. Given this, how would you implement `pes checkout <branch>` — what files need to change in `.pes/`, and what must happen to the working directory? What makes this operation complex?
+Answer: A branch in PES-VCS is a file that stores a commit hash inside .pes/refs/heads/. To implement pes checkout : 
+1. Update .pes/HEAD to point to the selected branch 
+2. Read the commit hash from .pes/refs/heads/ 
+3. Load the corresponding tree object
+ 4. Replace the working directory files with that tree 
+
+Why complex: 
+• Existing files must be safely overwritten 
+• Uncommitted changes may be lost 
+• Directory structure must be recreated correctly
 
 **Q5.2:** When switching branches, the working directory must be updated to match the target branch's tree. If the user has uncommitted changes to a tracked file, and that file differs between branches, checkout must refuse. Describe how you would detect this "dirty working directory" conflict using only the index and the object store.
+Answer: A working directory is dirty if files are modified but not committed.
+Steps: 
+1. Read file content from working directory 
+2. Compute its SHA-256 hash 
+3. Compare with hash stored in .pes/index 
+4. If mismatch → file is modified 
+
+Conclusion: Dirty state is detected by comparing hashes between working directory and index
 
 **Q5.3:** "Detached HEAD" means HEAD contains a commit hash directly instead of a branch reference. What happens if you make commits in this state? How could a user recover those commits?
+Q5.3 What is a Detached HEAD state? How can commits be recovered? 
+Answer: Detached HEAD occurs when .pes/HEAD points directly to a commit instead of a branch. 
+Effects: 
+• New commits are created 
+• But not linked to any branch Recovery: 
+• Use the commit hash 
+• Create a new branch pointing to that commit
 
 ### Garbage Collection and Space Reclamation
 
 **Q6.1:** Over time, the object store accumulates unreachable objects — blobs, trees, or commits that no branch points to (directly or transitively). Describe an algorithm to find and delete these objects. What data structure would you use to track "reachable" hashes efficiently? For a repository with 100,000 commits and 50 branches, estimate how many objects you'd need to visit.
+Answer: Garbage collection removes unused objects. 
+Steps: 
+1. Start from all branch heads
+2. Perform DFS (Depth First Search) 
+3. Mark all reachable objects 
+4. Delete unmarked (unreachable) objects
+Data Structure: 
+• Hash set to track visited objects 
 
 **Q6.2:** Why is it dangerous to run garbage collection concurrently with a commit operation? Describe a race condition where GC could delete an object that a concurrent commit is about to reference. How does Git's real GC avoid this?
+Answer: 
+Problem: 
+• Garbage collector deletes objects while commit is in progress 
+• Commit may reference deleted objects 
+Solution: 
+• Use locking mechanism 
+• Prevent commit and GC from running simultaneously 
 
 ---
 
