@@ -467,7 +467,7 @@ cat .pes/index    # Human-readable text format
 **📸 Screenshot 3A:** Run `./pes init`, `./pes add file1.txt file2.txt`, `./pes status` — show the output.
 [!phase3](3a.png)
 **📸 Screenshot 3B:** `cat .pes/index` showing the text-format index with your entries.
-
+[!phase3](3b.png)
 ---
 
 ## Phase 4: Commits and History
