@@ -516,7 +516,7 @@ make test-integration
 ```
 
 **📸 Screenshot 4A:** Output of `./pes log` showing three commits with hashes, authors, timestamps, and messages.
-
+[!phase4](4a.png)
 **📸 Screenshot 4B:** `find .pes -type f | sort` showing object store growth after three commits.
 
 **📸 Screenshot 4C:** `cat .pes/refs/heads/main` and `cat .pes/HEAD` showing the reference chain.
